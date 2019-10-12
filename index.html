@@ -56,6 +56,20 @@
 
 	map.on('locationfound', onLocationFound);
 	map.on('locationerror', onLocationError);
+	
+	
+	//Marker part  DEV ONLY
+	//https://www.papaparse.com/
+	
+	L.marker([48.582305, 7.764928]).addTo(map);
+	//END marker part
+	
+	
+	
+	
+	//Add points   
+	
+	//END add points
 
 	map.locate({setView: true, maxZoom: 16});
 </script>
