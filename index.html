@@ -1,156 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>OSM Buildings</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
+	
+	<title>Mobile tutorial - Leaflet</title>
 
-    #map {
-      width: 100%;
-      height: 100%;
-    }
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
-    .control {
-      position: absolute;
-      left: 0;
-      z-index: 1000;
-    }
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
 
-    .control.tilt {
-      top: 0;
-    }
 
-    .control.rotation {
-      top: 45px;
-    }
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
 
-    .control.zoom {
-      top: 90px;
-    }
-
-    .control.zoom button{
-      font-weight: normal;
-    }
-
-    .control button {
-      width: 30px;
-      height: 30px;
-      margin: 15px 0 0 15px;
-      border: 1px solid #999999;
-      background: #ffffff;
-      opacity: 0.6;
-      border-radius: 5px;
-      box-shadow: 0 0 5px #666666;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .control button:hover {
-      opacity: 1;
-      cursor: pointer;
-    }
-  </style>
-  <link rel="stylesheet" href="OSMBuildings.css">
-  <script src="OSMBuildings.js"></script>
+	<style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
 </head>
-
 <body>
-<div id="map"></div>
 
-<div class="control tilt">
-  <button class="dec">&#8601;</button>
-  <button class="inc">&#8599;</button>
-</div>
-
-<div class="control rotation">
-  <button class="inc">&#8630;</button>
-  <button class="dec">&#8631;</button>
-</div>
-
-<div class="control zoom">
-  <button class="dec">-</button>
-  <button class="inc">+</button>
-</div>
+<div id='map'></div>
 
 <script>
-  const osmb = new OSMBuildings({
-    container: 'map',
-    zoom: 16,
-    minZoom: 16,
-    maxZoom: 19,
-    position: { latitude: 48.582356, longitude: 7.764675 },
-    state: true, // stores map position/rotation in url
-    attribution: '© 3D <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
-  });
+	var map = L.map('map').fitWorld();
 
-  osmb.addMapTiles(
-    'https://{s}.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png',
-    {
-      attribution: '© Data <a href="https://openstreetmap.org/copyright/">OpenStreetMap</a> · © Map <a href="https://mapbox.com/">Mapbox</a>'
-    }
-  );
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(map);
 
-	osmb.addOBJ('sphere.obj', { latitude: 48.582356, longitude: 7.764675 }, { id: "my_object_1", color: 'red'});
-  osmb.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+	function onLocationFound(e) {
+		var radius = e.accuracy / 2;
 
-  //***************************************************************************
+		L.marker(e.latlng).addTo(map)
+			.bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-  // on pointer up
-  osmb.on('pointerup', e => {
-    // check for event targets aka clicked buildings
-    const features = e.target;
+		L.circle(e.latlng, radius).addTo(map);
+	}
 
-    // if none, remove any previous selection and return
-    if (!features) {
-      osmb.highlight(feature => {});
-      return;
-    }
+	function onLocationError(e) {
+		alert(e.message);
+	}
 
-    // store id's from seleted items...
-    const featureIDList = features.map(feature => feature.id);
+	map.on('locationfound', onLocationFound);
+	map.on('locationerror', onLocationError);
 
-    // ...then is is faster: set highlight color for matching features
-    osmb.highlight(feature => {
-      if (featureIDList.indexOf(feature.id) > -1) {
-        return '#ffffff';
-      }
-    });
-  });
-
-  //***************************************************************************
-
-  const controlButtons = document.querySelectorAll('.control button');
-
-  controlButtons.forEach(button => {
-    button.addEventListener('click', e => {
-      const parentClassList = button.parentNode.classList;
-      const direction = button.classList.contains('inc') ? 1 : -1;
-      let increment, property;
-
-      if (parentClassList.contains('tilt')) {
-        property = 'Tilt';
-        increment = direction*10;
-      }
-      if (parentClassList.contains('rotation')) {
-        property = 'Rotation';
-        increment = direction*10;
-      }
-      if (parentClassList.contains('zoom')) {
-        property = 'Zoom';
-        increment = direction*1;
-      }
-      if (property) {
-        osmb['set'+ property](osmb['get'+ property]()+increment);
-      }
-    });
-  });
+	map.locate({setView: true, maxZoom: 16});
 </script>
+
+
+
 </body>
 </html>
