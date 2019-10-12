@@ -184,7 +184,7 @@
 		
 		var strongness;
 		
-		strongness=obj[i].PM1/10 //0-10
+		strongness=obj[i].PM1/15 //0-10
 		//obj[i].PM2.5 //?? ^^
 		//obj[i].PM10
 		
@@ -203,9 +203,10 @@
 		];  
 		
 		var colorR = obj[i].PM1.toString(16);
-		var colorV = (10-obj[i].PM1).toString(16);
+		var colorV = (15-obj[i].PM1).toString(16).replace("-", "");;
 		
 		var finalColor = '#'.concat(colorR).concat(colorV).concat('0');
+		console.log(finalColor); 
 		
 		var polyline = L.polyline(polylinePoints).setStyle({weight:4,color: finalColor,opacity: 1 }).addTo(map).bindPopup('<p>date<br />hour<br />values of pollution</p>');
 		
