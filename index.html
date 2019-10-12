@@ -61,7 +61,9 @@
 	//Marker part  DEV ONLY
 	//https://www.papaparse.com/
 	
-	L.marker([48.582305, 7.764928]).addTo(map);
+	L.marker([48.582305, 7.764928]).addTo(map)
+		.bindPopup('<p>date<br />hour<br />values of pollution</p>').openPopup();
+	
 	//END marker part
 	
 	
