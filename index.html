@@ -97,7 +97,10 @@
 
 	<div id='map' class='sidebar-map'></div>
 
+
 <script>	
+
+
 
 	//My lolilolDB
 	var data = '[{"Jour":"2019-10-07","Heure":"10:30:00","PM1":2,"PM2.5":4,"PM10":7,"Latitude":48.5989635,"Longitude":7.7424285},{"Jour":"2019-10-07","Heure":"10:30:15","PM1":3,"PM2.5":9,"PM10":15,"Latitude":48.599227,"Longitude":7.7425905},{"Jour":"2019-10-07","Heure":"10:30:30","PM1":3,"PM2.5":9,"PM10":15,"Latitude":48.599787,"Longitude":7.743076},{"Jour":"2019-10-07","Heure":"10:30:45","PM1":4,"PM2.5":12,"PM10":20,"Latitude":48.6001045,"Longitude":7.7433635},{"Jour":"2019-10-07","Heure":"10:31:00","PM1":4,"PM2.5":12,"PM10":20,"Latitude":48.600805,"Longitude":7.7441735},{"Jour":"2019-10-07","Heure":"10:31:15","PM1":5,"PM2.5":15,"PM10":26,"Latitude":48.601552,"Longitude":7.744991},{"Jour":"2019-10-07","Heure":"10:31:30","PM1":6,"PM2.5":18,"PM10":31,"Latitude":48.602008,"Longitude":7.7453725},{"Jour":"2019-10-07","Heure":"10:31:45","PM1":7,"PM2.5":21,"PM10":36,"Latitude":48.602382,"Longitude":7.7456915},{"Jour":"2019-10-07","Heure":"10:32:00","PM1":6,"PM2.5":18,"PM10":31,"Latitude":48.6031325,"Longitude":7.7462945},{"Jour":"2019-10-07","Heure":"10:32:15","PM1":6,"PM2.5":18,"PM10":31,"Latitude":48.603881,"Longitude":7.7468995},{"Jour":"2019-10-07","Heure":"10:32:30","PM1":5,"PM2.5":15,"PM10":26,"Latitude":48.6043765,"Longitude":7.747312},{"Jour":"2019-10-07","Heure":"10:32:45","PM1":5,"PM2.5":15,"PM10":26,"Latitude":48.604956,"Longitude":7.747782},{"Jour":"2019-10-07","Heure":"10:33:00","PM1":4,"PM2.5":12,"PM10":20,"Latitude":48.6055315,"Longitude":7.748259},{"Jour":"2019-10-07","Heure":"10:33:15","PM1":4,"PM2.5":12,"PM10":20,"Latitude":48.606239,"Longitude":7.748811},{"Jour":"2019-10-07","Heure":"10:33:30","PM1":5,"PM2.5":15,"PM10":26,"Latitude":48.606777,"Longitude":7.749226},{"Jour":"2019-10-07","Heure":"10:33:45","PM1":5,"PM2.5":15,"PM10":26,"Latitude":48.6074885,"Longitude":7.7496735}]';
@@ -113,6 +116,8 @@
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		id: 'mapbox.streets'
 	}).addTo(map);
+	
+	
 
 	function onLocationFound(e) {
 		var radius = e.accuracy / 2;
@@ -136,11 +141,8 @@
 	
 	//Marker part  DEV ONLY
 	//https://www.papaparse.com/
-	
-	
-	
-	
-	
+
+		
 	
 	var greenIcon = L.icon({
 		iconUrl: 'leaf-green.png',
@@ -152,6 +154,8 @@
 		shadowAnchor: [4, 62],  // the same for the shadow
 		popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 	});
+
+
 	
 	//----------------------------- Marker part
 	//L.marker([48.582305, 7.764928], {icon: greenIcon}).addTo(map).bindPopup('<p>date<br />hour<br />values of pollution</p>').openPopup();
@@ -175,6 +179,9 @@
 
 
 	map.locate({setView: true, maxZoom: 16});
+
+	
+
 </script>
 
 
